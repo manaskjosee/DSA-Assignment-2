@@ -1,0 +1,167 @@
+
+======================================================================
+PART (a): BUILDING THE HASH TABLE  (Division Method, m=10)
+======================================================================
+
+insert(105): h(105) = 105 mod 10 = 5  -> bucket[5] = [105]
+Index Bucket contents (chain)                 Chain length
+------------------------------------------------------------
+0     -- empty --                             0
+1     -- empty --                             0
+2     -- empty --                             0
+3     -- empty --                             0
+4     -- empty --                             0
+5     [105]                                   1
+6     -- empty --                             0
+7     -- empty --                             0
+8     -- empty --                             0
+9     -- empty --                             0
+
+insert(210): h(210) = 210 mod 10 = 0  -> bucket[0] = [210]
+Index Bucket contents (chain)                 Chain length
+------------------------------------------------------------
+0     [210]                                   1
+1     -- empty --                             0
+2     -- empty --                             0
+3     -- empty --                             0
+4     -- empty --                             0
+5     [105]                                   1
+6     -- empty --                             0
+7     -- empty --                             0
+8     -- empty --                             0
+9     -- empty --                             0
+
+insert(315): h(315) = 315 mod 10 = 5  -> bucket[5] = [105, 315]   <-- COLLISION (bucket already occupied)
+Index Bucket contents (chain)                 Chain length
+------------------------------------------------------------
+0     [210]                                   1
+1     -- empty --                             0
+2     -- empty --                             0
+3     -- empty --                             0
+4     -- empty --                             0
+5     [105, 315]                              2
+6     -- empty --                             0
+7     -- empty --                             0
+8     -- empty --                             0
+9     -- empty --                             0
+
+insert(420): h(420) = 420 mod 10 = 0  -> bucket[0] = [210, 420]   <-- COLLISION (bucket already occupied)
+Index Bucket contents (chain)                 Chain length
+------------------------------------------------------------
+0     [210, 420]                              2
+1     -- empty --                             0
+2     -- empty --                             0
+3     -- empty --                             0
+4     -- empty --                             0
+5     [105, 315]                              2
+6     -- empty --                             0
+7     -- empty --                             0
+8     -- empty --                             0
+9     -- empty --                             0
+
+insert(525): h(525) = 525 mod 10 = 5  -> bucket[5] = [105, 315, 525]   <-- COLLISION (bucket already occupied)
+Index Bucket contents (chain)                 Chain length
+------------------------------------------------------------
+0     [210, 420]                              2
+1     -- empty --                             0
+2     -- empty --                             0
+3     -- empty --                             0
+4     -- empty --                             0
+5     [105, 315, 525]                         3
+6     -- empty --                             0
+7     -- empty --                             0
+8     -- empty --                             0
+9     -- empty --                             0
+
+insert(630): h(630) = 630 mod 10 = 0  -> bucket[0] = [210, 420, 630]   <-- COLLISION (bucket already occupied)
+Index Bucket contents (chain)                 Chain length
+------------------------------------------------------------
+0     [210, 420, 630]                         3
+1     -- empty --                             0
+2     -- empty --                             0
+3     -- empty --                             0
+4     -- empty --                             0
+5     [105, 315, 525]                         3
+6     -- empty --                             0
+7     -- empty --                             0
+8     -- empty --                             0
+9     -- empty --                             0
+
+insert(735): h(735) = 735 mod 10 = 5  -> bucket[5] = [105, 315, 525, 735]   <-- COLLISION (bucket already occupied)
+Index Bucket contents (chain)                 Chain length
+------------------------------------------------------------
+0     [210, 420, 630]                         3
+1     -- empty --                             0
+2     -- empty --                             0
+3     -- empty --                             0
+4     -- empty --                             0
+5     [105, 315, 525, 735]                    4
+6     -- empty --                             0
+7     -- empty --                             0
+8     -- empty --                             0
+9     -- empty --                             0
+
+insert(840): h(840) = 840 mod 10 = 0  -> bucket[0] = [210, 420, 630, 840]   <-- COLLISION (bucket already occupied)
+Index Bucket contents (chain)                 Chain length
+------------------------------------------------------------
+0     [210, 420, 630, 840]                    4
+1     -- empty --                             0
+2     -- empty --                             0
+3     -- empty --                             0
+4     -- empty --                             0
+5     [105, 315, 525, 735]                    4
+6     -- empty --                             0
+7     -- empty --                             0
+8     -- empty --                             0
+9     -- empty --                             0
+
+======================================================================
+Collision summary after all insertions
+======================================================================
+Total insertions            : 8
+Table size (m)              : 10
+Non-empty buckets           : 2
+Total collisions            : 6
+Longest chain (max probes)  : 4
+Load factor (n/m)           : 0.80
+
+======================================================================
+PART (b): SEARCH COMPARISON -- Hashing vs Linear Search
+======================================================================
+Key     Hash: found   Hash comparisons    Linear: found   Linear comparisons
+----------------------------------------------------------------------------
+630     True          3                   True            6
+735     True          4                   True            7
+105     True          1                   True            1
+999     False         0                   False           8
+615     False         4                   False           8
+
+======================================================================
+PART (c): DERIVED PERFORMANCE STATS
+======================================================================
+n (keys)                          : 8
+m (table size)                    : 10
+Load factor alpha = n/m           : 0.80
+Theoretical avg comparisons (chaining, unsuccessful) ~ 1 + alpha : 1.80
+Observed avg comparisons (hashing, this search set)  : 2.40
+Observed avg comparisons (linear search, this search set) : 6.00
+
+======================================================================
+BONUS: Same keys with a PRIME table size (m=11) -- design fix
+======================================================================
+Index Bucket contents (chain)                 Chain length
+------------------------------------------------------------
+0     -- empty --                             0
+1     [210]                                   1
+2     [420]                                   1
+3     [630]                                   1
+4     [840]                                   1
+5     -- empty --                             0
+6     [105]                                   1
+7     [315]                                   1
+8     [525]                                   1
+9     [735]                                   1
+10    -- empty --                             0
+
+Collisions with m=11 : 0
+Load factor with m=11 : 0.73
